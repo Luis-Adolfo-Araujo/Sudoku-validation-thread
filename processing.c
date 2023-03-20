@@ -40,7 +40,7 @@ void *verifyRows(void *arg)
             int v = checkRepetition(threads_arg->grid[i][j], tmp_array, j + 1);
             if (v == 1)
             {
-                printf("FAILURE");
+                create_output_file(v);
                 exit(1);
             }
         }
@@ -60,7 +60,7 @@ void *verifyColumns(void *arg)
         int v = checkRepetition(threads_arg->grid[i][j], tmp_array, i + 1);
         if (v == 1)
         {
-            printf("FAILURE");
+            create_output_file(v);
             exit(1);
         }
         if (i + 1 == threads_arg->grid_length && j + 1 == threads_arg->grid_length)
@@ -103,7 +103,7 @@ void *verifySubgrid(void *arg)
                     v = checkRepetition(threads_arg->grid[x][y], tmp_array, counter + 1);
                     if (v == 1)
                     {
-                        printf("FAILURE");
+                        create_output_file(v);
                         exit(1);
                     }
                     counter++;
@@ -161,6 +161,7 @@ int verifyVeracity(int subgrid_length, int grid_length, int **grid)
         pthread_join(threads[i], NULL);
     }
 
-    printf("SUCCESS\n");
+    int veracity = 0;
+    create_output_file(veracity);
     return 0;
 }
