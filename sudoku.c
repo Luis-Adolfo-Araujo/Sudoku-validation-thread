@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     int **grid_sudoku = getSudoku(filename);
     if (grid_sudoku == NULL)
     {
-        printf("Error: Failed to read Sudoku from file %s\n", filename);
+        printf("Error to read file");
         exit(1);
     }
 

@@ -12,7 +12,6 @@ FILE *openFile(char *filename)
     file_ptr = fopen(filename, "r");
     if (file_ptr == NULL)
     {
-        create_output_file(1);
         printf("Error to read file\n");
         exit(1);
     }
@@ -34,7 +33,6 @@ int getGridLength(char *filename)
     }
     else
     {
-        create_output_file(1);
         printf("File out of format\n");
         exit(1);
     }
@@ -56,7 +54,6 @@ int getSubgridLength(char *filename, int n)
     }
     else
     {
-        create_output_file(1);
         printf("File out of format\n");
         exit(1);
     }
@@ -89,7 +86,6 @@ int **getSudoku(char *filename)
             if (k > n || k == 0)
             {
                 printf("File out of format");
-                create_output_file(1);
                 exit(1);
             }
             grid[i][j] = k;
@@ -98,7 +94,6 @@ int **getSudoku(char *filename)
             if (j == n && c != NULL)
             {
                 printf("File out of Format");
-                create_output_file(1);
                 exit(1);
             }
         }
@@ -107,7 +102,6 @@ int **getSudoku(char *filename)
     if (i != n)
     {
         printf("File out of Format");
-        create_output_file(1);
         exit(1);
     }
     return grid;
