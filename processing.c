@@ -6,10 +6,8 @@
 
 typedef struct
 {
-    int subgrid_length;
     int grid_length;
     int **grid;
-    int result;
 } threads_args;
 
 int checkRepetition(int number, int *grid, int length)
@@ -79,32 +77,26 @@ void *verifyColumns(void *arg)
 void *verifySubgrid(void *arg)
 {
     threads_args *threads_arg = (threads_args *)arg;
-    int array_length = threads_arg->subgrid_length * threads_arg->subgrid_length;
+    int array_length = subgrid_row * subgrid_column;
     int tmp_array[array_length];
-    int counter = 0;
-    int v = 0;
 
-    for (int i = 0; i < threads_arg->grid_length; i += threads_arg->subgrid_length)
+    for (int i = 0; i < threads_arg->grid_length; i++)
     {
-        for (int j = 0; j < threads_arg->grid_length; j += threads_arg->subgrid_length)
+        for (int j = 0; j < threads_arg->grid_length; j++)
         {
-            // Process subgrid starting at (i, j)
-            int array_length = threads_arg->subgrid_length * threads_arg->subgrid_length;
-            int tmp_array[array_length];
             int counter = 0;
-            int v = 0;
 
             // Copy elements of subgrid into tmp_array
-            for (int x = i; x < i + threads_arg->subgrid_length; x++)
+            for (int x = i; x < i + subgrid_row; x++)
             {
-                for (int y = j; y < j + threads_arg->subgrid_length; y++)
+                for (int y = j; y < j + subgrid_column; y++)
                 {
                     tmp_array[counter] = threads_arg->grid[x][y];
-                    v = checkRepetition(threads_arg->grid[x][y], tmp_array, counter + 1);
+                    int v = checkRepetition(threads_arg->grid[x][y], tmp_array, counter + 1);
                     if (v == 1)
                     {
                         create_output_file(v);
-                        exit(1);
+                        pthread_exit(NULL);
                     }
                     counter++;
                 }
@@ -114,7 +106,7 @@ void *verifySubgrid(void *arg)
     pthread_exit(NULL);
 }
 
-int verifyVeracity(int subgrid_length, int grid_length, int **grid)
+int verifyVeracity(int grid_length, int **grid)
 {
     pthread_t threads[NUM_THREADS];
     int thread_ids[NUM_THREADS];
@@ -124,7 +116,6 @@ int verifyVeracity(int subgrid_length, int grid_length, int **grid)
     {
         thread_ids[i] = i;
         threads_args *threads_arg = (threads_args *)malloc(sizeof(threads_args));
-        threads_arg->subgrid_length = subgrid_length;
         threads_arg->grid_length = grid_length;
         threads_arg->grid = grid;
         if (i % 3 == 0)

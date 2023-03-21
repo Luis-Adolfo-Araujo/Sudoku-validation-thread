@@ -38,7 +38,7 @@ int getGridLength(char *filename)
     }
 }
 
-int getSubgridLength(char *filename, int n)
+void getSubgridLength(char *filename, int n)
 {
     FILE *file_ptr = openFile(filename);
 
@@ -48,9 +48,10 @@ int getSubgridLength(char *filename, int n)
     int a = 0;
     int b = 0;
     sscanf(inputfile_second_line, "%dx%d", &a, &b);
-    if (a == b && a * b == n)
+    if (a * b == n)
     {
-        return a;
+        subgrid_row = a;
+        subgrid_column = b;
     }
     else
     {
