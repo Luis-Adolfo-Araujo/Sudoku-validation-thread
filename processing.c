@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <string.h>
 
 #define NUM_THREADS 12
 
@@ -79,27 +80,21 @@ void *verifySubgrid(void *arg)
     threads_args *threads_arg = (threads_args *)arg;
     int array_length = subgrid_row * subgrid_column;
     int tmp_array[array_length];
+    int row_start = 0, col_start = 0;
 
-    for (int i = 0; i < threads_arg->grid_length; i++)
+    for (int i = row_start; i < row_start + subgrid_row; i++)
     {
-        for (int j = 0; j < threads_arg->grid_length; j++)
+        for (int j = col_start; j < col_start + subgrid_column; j++)
         {
-            int counter = 0;
-
-            // Copy elements of subgrid into tmp_array
-            for (int x = i; x < i + subgrid_row; x++)
+            int cell_value = threads_arg->grid[i][j];
+            if (tmp_array[cell_value - 1])
             {
-                for (int y = j; y < j + subgrid_column; y++)
-                {
-                    tmp_array[counter] = threads_arg->grid[x][y];
-                    int v = checkRepetition(threads_arg->grid[x][y], tmp_array, counter + 1);
-                    if (v == 1)
-                    {
-                        create_output_file(v);
-                        pthread_exit(NULL);
-                    }
-                    counter++;
-                }
+                create_output_file(1);
+                exit(1);
+            }
+            else
+            {
+                tmp_array[cell_value - 1] = 1;
             }
         }
     }

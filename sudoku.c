@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     }
 
     int gridLength = getGridLength(filename);
+    getSubgridLength(filename, gridLength);
     verifyVeracity(gridLength, grid_sudoku);
 
     return 0;

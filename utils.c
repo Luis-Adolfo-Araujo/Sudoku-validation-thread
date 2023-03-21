@@ -1,3 +1,4 @@
+#define __null ((void*)0)
 int subgrid_row;
 int subgrid_column;
 

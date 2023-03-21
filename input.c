@@ -60,7 +60,6 @@ void getSubgridLength(char *filename, int n)
     }
 }
 
-// Adicionar implementação subgrid
 int **getSudoku(char *filename)
 {
     FILE *file_ptr = openFile(filename);
