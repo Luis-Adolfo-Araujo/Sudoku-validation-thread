@@ -1,5 +1,5 @@
-#include "input.c"
 #include "out.c"
+#include "input.c"
 #include "processing.c"
 
 FILE *openFile(char *filename);

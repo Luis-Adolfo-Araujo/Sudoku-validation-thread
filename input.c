@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <ctype.h>
 
 #define GRID_LINES 10
 #define MAX_INPUT 8
@@ -12,8 +12,9 @@ FILE *openFile(char *filename)
     file_ptr = fopen(filename, "r");
     if (file_ptr == NULL)
     {
+        create_output_file(1);
         printf("Error to read file\n");
-        exit(0);
+        exit(1);
     }
 
     return file_ptr;
@@ -33,8 +34,9 @@ int getGridLength(char *filename)
     }
     else
     {
+        create_output_file(1);
         printf("File out of format\n");
-        exit(0);
+        exit(1);
     }
 }
 
@@ -54,12 +56,12 @@ int getSubgridLength(char *filename, int n)
     }
     else
     {
+        create_output_file(1);
         printf("File out of format\n");
-        exit(0);
+        exit(1);
     }
 }
 
-// Adicionar Verificação de letra
 // Adicionar implementação subgrid
 int **getSudoku(char *filename)
 {
@@ -84,17 +86,19 @@ int **getSudoku(char *filename)
         while (c != NULL && j < n)
         {
             int k = atoi(c);
-            if (k > n)
+            if (k > n || k == 0)
             {
                 printf("File out of format");
+                create_output_file(1);
                 exit(1);
             }
-            grid[i][j] = atoi(c);
+            grid[i][j] = k;
             c = strtok(NULL, " ");
             j++;
             if (j == n && c != NULL)
             {
                 printf("File out of Format");
+                create_output_file(1);
                 exit(1);
             }
         }
@@ -103,6 +107,7 @@ int **getSudoku(char *filename)
     if (i != n)
     {
         printf("File out of Format");
+        create_output_file(1);
         exit(1);
     }
     return grid;
