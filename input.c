@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define GRID_LINES 10
-#define MAX_INPUT 8
+#define GRID_LINES 100
+#define MAX_INPUT 10
 #define MAX_LENGTH 1001000
 
 FILE *openFile(char *filename)
@@ -23,10 +23,15 @@ int getGridLength(char *filename)
 {
     FILE *file_ptr = openFile(filename);
     char inputfile_first_line[MAX_INPUT];
-    fscanf(file_ptr, "%7s", inputfile_first_line);
+    fscanf(file_ptr, "%9s", inputfile_first_line);
     int n = 0;
     int n1 = 0;
     sscanf(inputfile_first_line, "%dx%d", &n, &n1);
+    if (n == 0)
+    {
+        printf("File out of format\n");
+        exit(1);
+    }
     if (n == n1)
     {
         return n;
@@ -43,8 +48,8 @@ void getSubgridLength(char *filename, int n)
     FILE *file_ptr = openFile(filename);
 
     char inputfile_second_line[MAX_INPUT];
-    fscanf(file_ptr, "%7s", inputfile_second_line);
-    fscanf(file_ptr, "%7s", inputfile_second_line);
+    fscanf(file_ptr, "%9s", inputfile_second_line);
+    fscanf(file_ptr, "%9s", inputfile_second_line);
     int a = 0;
     int b = 0;
     sscanf(inputfile_second_line, "%dx%d", &a, &b);
@@ -93,15 +98,26 @@ int **getSudoku(char *filename)
             j++;
             if (j == n && c != NULL)
             {
-                printf("File out of Format");
+                printf("File out of format");
                 exit(1);
             }
         }
         i++;
     }
+    for (int k = 0; k < i; k++)
+    {
+        for (int z = 0; z < i; z++)
+        {
+            if (z < i - 1 && grid[k][z] != 0 && grid[k][z + 1] != 0)
+            {
+                printf("File out of format");
+                exit(1);
+            }
+        }
+    }
     if (i != n)
     {
-        printf("File out of Format");
+        printf("File out of format");
         exit(1);
     }
     return grid;
